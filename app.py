@@ -1,3 +1,4 @@
+import os
 import cherrypy
 import utility
 
@@ -6,14 +7,18 @@ class HelloWorld(object):
     def index(self):
         return """
         <html>
+            <head>
+                <link href="/static/css/style.css" rel="stylesheet">
+            </head>
             <body>
-                <button>Flash Random</button>
+                <button onclick="sendPost('flashRandom')">Flash Random</button>
                 <hr/>
-                <button>Lava Lamp Mode</button>
-                <button>Rave Mode</button>
-                <button>Reset to Normal</button>
-                <button>Off</button>
+                <button onclick="sendPost('lavaLampMode')">Lava Lamp Mode</button>
+                <button onclick="sendPost('raveMode')">Rave Mode</button>
+                <button onclick="sendPost('normal')">Reset to Normal</button>
+                <button onclick="sendPost('off')">Off</button>
             </body>
+            <script src="/static/js/script.js"></script>
         </html>
         
         """
@@ -23,5 +28,15 @@ if __name__ == '__main__':
     ip_address = utility.get_ip_address()
     cherrypy.config.update({'server.socket_host': ip_address,
                         'server.socket_port': 8080})
+    conf = {
+            '/': {
+                'tools.sessions.on': True,
+                'tools.staticdir.root': os.path.abspath(os.getcwd())
+            },
+            '/static': {
+                'tools.staticdir.on': True,
+                'tools.staticdir.dir': './public'
+            }
+        }
 
-    cherrypy.quickstart(HelloWorld())
+    cherrypy.quickstart(HelloWorld(), '/', conf)
