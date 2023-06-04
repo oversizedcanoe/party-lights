@@ -2,21 +2,19 @@ window.onload = function() {
     console.log('ready -- initialize lights')
 };
 
-
-
 function sendPost(message) {
-    console.log('message is -> ', message)
-    
+    req = {'behaviour':message};
+
     fetch('http://192.168.2.28:8081/changeLight', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        behaviour: JSON.stringify({'behaviour': message})
+        body: JSON.stringify(req)
     })
     .then((response) => {
-        response.text().then((message) => {
+        response.json().then((message) => {
             handlePostResult(message)
         });
     });

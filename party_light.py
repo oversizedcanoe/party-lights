@@ -38,11 +38,12 @@ def get_broadcast_address() -> str:
     return target
 
 async def run_app():
+    print('Run App called')
     lights: List[SmartBulb] = await init_lights()
     async with asyncio.TaskGroup() as tg:
         tg.create_task(lb.lava_lamp_mode(lights[0]))
         tg.create_task(lb.lava_lamp_mode(lights[1]))
         tg.create_task(lb.lava_lamp_mode(lights[2]))
 
-
-asyncio.run(run_app())
+if __name__ == '__main__':
+    asyncio.run(run_app)
