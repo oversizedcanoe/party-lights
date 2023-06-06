@@ -10,15 +10,17 @@ async def pulse_light_forever(light: SmartBulb, sleep_time_sec: float):
         await asyncio.sleep(sleep_time_sec)
 
 async def rave_mode(light: SmartBulb):
-    await _flow_through_colors(light, 5, 0.2)
+    await _flow_through_colors(light, 10, 0.01)
 
 async def lava_lamp_mode(light: SmartBulb):
-    await _flow_through_colors(light, 1, 0.02)
+    await _flow_through_colors(light, 5, 0.4)
 
 async def _flow_through_colors(light: SmartBulb, hue_change_amount: int, sleep_time_ms: float):
     hue_change_amount = hue_change_amount
     hue = randint(0, 360)
-    num_iter_until_reverse = randint(20,100)
+
+    max_iter = 360 / hue_change_amount
+    num_iter_until_reverse = randint(int(max_iter/2), int(max_iter))
 
     iter_count = 0
     add_to_hue = True

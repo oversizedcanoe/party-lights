@@ -46,7 +46,7 @@ def get_broadcast_address() -> str:
     return target
 
 async def run_app(func):
-    print('Run App called')
+    print('Run App called with func: ' + str(func))
     lights: List[SmartBulb] = await init_lights()
     async with asyncio.TaskGroup() as tg:
         tg.create_task(func(lights[0]))
@@ -74,4 +74,4 @@ async def run_behaviour(behaviour):
         tg.create_task(func(lights[2]))
 
 if __name__ == '__main__':
-    asyncio.run(run_app)
+    asyncio.run(run_app(lb.lava_lamp_mode))
