@@ -21,11 +21,8 @@ class Server(object):
             print(error)
             return error
 
-    async def HandlePost(self, behaviour):
-        if behaviour == 'flashRandom':
-            asyncio.run(party_light.run_app())
-        elif behaviour == 'lavaLampMode':
-            raise Exception('Oh no an error')
+    def HandlePost(self, behaviour):
+        asyncio.run(party_light.run_behaviour(behaviour))
 
 if __name__ == '__main__':
     cherrypy_cors.install()
@@ -47,3 +44,12 @@ if __name__ == '__main__':
     }
 
     cherrypy.quickstart(Server(), '/', conf)
+
+
+
+# The issue is that each request coming into the server spawns a new thread. So we can't easily use the same event loop.
+# However in the current way (using asyncio.run(...)) each new request results in this error from the kasa library: Detected protocol reuse between different event loop
+# It also does not log errors properly
+# According to the docs "This means that you need to use the same event loop for subsequent requests".
+# So I believe the solution is to have some global event loop startup on the server's startup, then access that on a different thread somehow.
+# See here for more info: https://docs.python.org/3/library/asyncio-dev.html#asyncio-multithreading

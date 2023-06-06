@@ -15,7 +15,7 @@ class HelloWorld(object):
                 <hr/>
                 <button onclick="sendPost('lavaLampMode')">Lava Lamp Mode</button>
                 <button onclick="sendPost('raveMode')">Rave Mode</button>
-                <button onclick="sendPost('normal')">Reset to Normal</button>
+                <button onclick="sendPost('reset')">Reset to Normal</button>
                 <button onclick="sendPost('off')">Off</button>
             </body>
             <script src="/static/js/script.js"></script>
