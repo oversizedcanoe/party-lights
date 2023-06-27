@@ -2,8 +2,11 @@ import asyncio
 from kasa import SmartBulb
 from random import randint
 
+stop_event = None
+
 async def pulse_light_forever(light: SmartBulb, sleep_time_sec: float):
-    while True:
+    global stop_event
+    while not stop_event.is_set():
         await light.turn_on(transition=1)
         await asyncio.sleep(sleep_time_sec)
         await light.turn_off(transition=1)
@@ -25,7 +28,8 @@ async def _flow_through_colors(light: SmartBulb, hue_change_amount: int, sleep_t
     iter_count = 0
     add_to_hue = True
 
-    while True:
+    global stop_event
+    while not stop_event.is_set():
         await light.set_hsv(hue, 100, 100)
         iter_count += 1
         await asyncio.sleep(sleep_time_ms)
@@ -45,7 +49,9 @@ async def _flow_through_colors(light: SmartBulb, hue_change_amount: int, sleep_t
             num_iter_until_reverse = randint(20,100)
 
 async def flash_random_colors(light: SmartBulb):
-    while True:
+
+    global stop_event
+    while not stop_event.is_set():
         hue = randint(0, 360)
         await light.set_hsv(hue, 100, 100)
         await light.turn_on(transition=1)

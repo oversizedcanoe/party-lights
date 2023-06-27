@@ -64,14 +64,24 @@ async def run_behaviour(behaviour):
             func = lb.rave_mode
         case 'lavaLampMode': 
             func = lb.lava_lamp_mode
-        case 'reset', _:
+        case 'reset':
             func = lb.return_to_normal
 
     lights: List[SmartBulb] = await init_lights()
+
+    if (lb.stop_event is not None):
+        lb.stop_event.set()
+    
+    lb.stop_event = asyncio.Event()
+    
     async with asyncio.TaskGroup() as tg:
-        tg.create_task(func(lights[0]))
-        tg.create_task(func(lights[1]))
-        tg.create_task(func(lights[2]))
+        try:
+            tg.create_task(func(lights[0]))
+            tg.create_task(func(lights[1]))
+            tg.create_task(func(lights[2]))
+        except Exception as e:
+            print('TASK ERROR!!! ' + str(e))
+            pass
 
 if __name__ == '__main__':
     asyncio.run(run_app(lb.lava_lamp_mode))
