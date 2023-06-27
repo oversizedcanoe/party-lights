@@ -17,15 +17,28 @@ class Server(object):
             self.HandlePost(behaviour)
             return 'Successfully posted:' + behaviour
         except Exception as inst:
-            error = 'Error occurred: ' + str(inst) 
+            error = 'Error ' + type(inst).__name__+ ' occurred: ' + str(inst) 
             print(error)
             return error
 
     def HandlePost(self, behaviour):
-        asyncio.run(party_light.run_behaviour(behaviour))
+        loop = None
+
+        try:
+            loop = asyncio.get_running_loop()
+        except Exception as e:
+            print('Can''t get running loop: ' + str(e))
+        finally:
+            loop = asyncio.new_event_loop()
+
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(party_light.run_behaviour(behaviour))
+        loop.close()
+
 
 if __name__ == '__main__':
     cherrypy_cors.install()
+
         # override default of 127.0.0.1 so this is accessible on all devices on this network
     ip_address = utility.get_ip_address()
     cherrypy.config.update({'server.socket_host': ip_address,
