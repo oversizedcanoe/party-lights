@@ -13,7 +13,7 @@ async def pulse_light_forever(light: SmartBulb, sleep_time_sec: float):
         await asyncio.sleep(sleep_time_sec)
 
 async def rave_mode(light: SmartBulb):
-    await _flow_through_colors(light, 10, 0.01)
+    await _flow_through_colors(light, 15, 0.01)
 
 async def lava_lamp_mode(light: SmartBulb):
     await _flow_through_colors(light, 5, 0.4)
@@ -49,7 +49,6 @@ async def _flow_through_colors(light: SmartBulb, hue_change_amount: int, sleep_t
             num_iter_until_reverse = randint(20,100)
 
 async def flash_random_colors(light: SmartBulb):
-
     global stop_event
     while not stop_event.is_set():
         hue = randint(0, 360)
@@ -59,10 +58,22 @@ async def flash_random_colors(light: SmartBulb):
         await light.turn_off(transition=1)
         await asyncio.sleep(0.1)
 
+async def shrek(light: SmartBulb):
+    await light.set_color_temp(2700)
+    await light.set_brightness(25)
+    await light.set_hsv(74,82,87) 
+    await light.turn_on()
+
 # sets to warm white/yellow
 async def return_to_normal(light: SmartBulb):
     await light.set_color_temp(2700)
     await light.set_brightness(25)
     await light.set_hsv(0, 0, 25) 
     await light.turn_on()
+
+async def toggle_on_off(light: SmartBulb):
+    if (light.is_on):
+        await light.turn_off()
+    else:
+        await light.turn_on()
 

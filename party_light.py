@@ -7,11 +7,11 @@ from typing import List
 inited_lights = []
 kitchen_light_device_name = 'kitchen light '
 
-allowed_behaviours = ['flashRandom', 'raveMode', 'lavaLampMode', 'reset']
+allowed_behaviours = ['init', 'flashRandom', 'raveMode', 'lavaLampMode', 'shrek', 'reset', 'toggle']
 
-async def init_lights() -> List[SmartBulb]:
+async def init_lights(force = False) -> List[SmartBulb]:
     global inited_lights
-    if len(inited_lights) == 0:
+    if len(inited_lights) == 0 or force == True:
 
         target = get_broadcast_address()
         found_devices = await Discover.discover(target=target)
@@ -21,6 +21,7 @@ async def init_lights() -> List[SmartBulb]:
         kitchen_light_three: SmartBulb = None
         
         for _, device in found_devices.items():
+            print('Found ' + device.alias)
             if device.alias == kitchen_light_device_name + '1':
                 kitchen_light_one = device
                 await kitchen_light_one.update()
@@ -56,18 +57,26 @@ async def run_app(func):
 async def run_behaviour(behaviour):
     if behaviour not in allowed_behaviours:
         raise Exception(f'Behaviour "{behaviour}" not allowed.')
+
+    force = behaviour == 'init'
+    lights: List[SmartBulb] = await init_lights(force)
     
     match behaviour:
+        case 'init':
+            print('Lights initialized')
+            return
         case 'flashRandom':
             func = lb.flash_random_colors
         case 'raveMode':
             func = lb.rave_mode
         case 'lavaLampMode': 
             func = lb.lava_lamp_mode
+        case 'shrek':
+            func = lb.shrek            
         case 'reset':
             func = lb.return_to_normal
-
-    lights: List[SmartBulb] = await init_lights()
+        case 'toggle':
+            func = lb.toggle_on_off
 
     if (lb.stop_event is not None):
         lb.stop_event.set()
