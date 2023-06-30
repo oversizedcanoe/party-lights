@@ -11,12 +11,19 @@ class HelloWorld(object):
                 <link href="/static/css/style.css" rel="stylesheet">
             </head>
             <body>
-                <button onclick="sendPost('flashRandom')">Flash Random</button>
-                <hr/>
-                <button onclick="sendPost('lavaLampMode')">Lava Lamp Mode</button>
-                <button onclick="sendPost('raveMode')">Rave Mode</button>
-                <button onclick="sendPost('reset')">Reset to Normal</button>
-                <button onclick="sendPost('off')">Off</button>
+                <div id="loadingScreen">
+                    <marquee id="marquee" height="100%" width="100%" behavior="alternate" direction="down" scrolldelay="20" truespeed><marquee scrolldelay="20" truespeed behavior="alternate">Connecting...</marquee></marquee>
+                </div>
+
+                <div class="gridContainer">
+                    <button id="rainbowButton" onclick="sendPost('flashRandom')">Flash Random</button>
+                    <button style="background-color:blue" onclick="sendPost('lavaLampMode')">Lava Lamp Mode</button>
+                    <button style="background-color:red" onclick="sendPost('raveMode')">Rave Mode</button>
+                    <button id="shrekButton" onclick="sendPost('shrek')"></button>
+                    <button style="background-color:lightyellow" onclick="sendPost('reset')">Reset to Normal</button>
+                    <button style="background-color:gray" onclick="sendPost('toggle')">On/Off</button>
+                </div>
+                
             </body>
             <script src="/static/js/script.js"></script>
         </html>
