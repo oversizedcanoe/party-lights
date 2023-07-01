@@ -14,6 +14,8 @@ async def init_lights(force = False) -> List[SmartBulb]:
     if len(inited_lights) == 0 or force == True:
 
         target = get_broadcast_address()
+
+        print('Searching for devices on network: ' + target)
         found_devices = await Discover.discover(target=target)
 
         kitchen_light_one: SmartBulb = None
