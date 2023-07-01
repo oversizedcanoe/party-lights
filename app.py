@@ -15,7 +15,7 @@ class HelloWorld(object):
                     <marquee id="marquee" height="100%" width="100%" behavior="alternate" direction="down" scrolldelay="20" truespeed><marquee scrolldelay="20" truespeed behavior="alternate">Connecting...</marquee></marquee>
                 </div>
 
-                <div class="gridContainer">
+                <div id="gridContainer">
                     <button id="rainbowButton" onclick="sendPost('flashRandom')">Flash Random</button>
                     <button style="background-color:blue" onclick="sendPost('lavaLampMode')">Lava Lamp Mode</button>
                     <button style="background-color:red" onclick="sendPost('raveMode')">Rave Mode</button>

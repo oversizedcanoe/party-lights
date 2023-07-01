@@ -12,12 +12,13 @@ window.onload = async function() {
 
 function toggleLoading(hide) {
     document.getElementById('loadingScreen').hidden = hide;
+    document.getElementById('gridContainer').hidden = !hide;
 }
 
 function sendPost(message) {
     req = {'behaviour':message};
 
-    fetch('http://192.168.2.28:8081/changeLight', {
+    fetch('http://192.168.2.69:8081/changeLight', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

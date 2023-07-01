@@ -14,8 +14,8 @@ body {
     font-family:cursive;
 }
 
-.gridContainer { 
-    height: 98vh;
+#gridContainer { 
+    height: 90vh;
     display: grid;
     gap: 2vh;
     grid-auto-rows: 1fr
@@ -23,9 +23,10 @@ body {
 
 button { 
     font-size: 4rem;
-    font-family: cursive;
+    font-family: 'Comic Sans', cursive;
     font-weight: 900;
     text-transform: uppercase;
+    outline-offset: 4px;
 }
 
 #rainbowButton { 
